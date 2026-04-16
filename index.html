@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>CROSSMEDIA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+    <style>
+
+:root {
+    --bg: #0f0f0f;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #252525;
+    --border2: #333;
+    --text: #e8e8e8;
+    --muted: #666;
+    --muted2: #888;
+    --cyan: #00e5ff;
+    --pink: #ff2d6b;
+    --green: #39ff14;
+    --gold: #ffd700;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius: 8px;
+    --header-h: 68px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+img { display: block; }
+a { text-decoration: none; color: inherit; }
+button { font-family: var(--font-body); cursor: pointer; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+
+.page {
+    display: none; min-height: 100vh;
+    opacity: 0;
+    transform: translateY(16px);
+}
+.page.active {
+    display: block;
+    animation: pageIn 0.35s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+.page.leaving {
+    display: block;
+    animation: pageOut 0.2s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pageOut {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-10px); }
+}
+
+
+#site-header {
+    position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+    background: rgba(15,15,15,0.96); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; z-index: 1000;
+}
+.header-logo {
+    font-family: var(--font-display);
+    font-size: 1.8rem; letter-spacing: 3px;
+    color: var(--text); cursor: pointer;
+    transition: all 0.25s;
+    padding: 4px 8px; border-radius: 6px;
+    position: relative;
+}
+.header-logo::after {
+    content: '';
+    position: absolute; bottom: 0; left: 8px; right: 8px; height: 2px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.header-logo:hover { color: var(--cyan); text-shadow: 0 0 20px rgba(0,229,255,0.4); }
+.header-logo:hover::after { transform: scaleX(1); }
+.header-logo span { color: var(--cyan); }
+.header-right { display: flex; align-items: center; gap: 20px; }
+.header-nav-link {
+    color: var(--muted2); font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.5px; cursor: pointer;
+    background: none; border: none;
+    padding: 7px 14px; border-radius: 8px;
+    position: relative; overflow: hidden;
+    transition: color 0.25s;
+}
+.header-nav-link::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(0,229,255,0.08);
+    border-radius: 8px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.header-nav-link:hover { color: var(--cyan); }
+.header-nav-link:hover::before { transform: scaleX(1); }
+
+.header-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 0.85rem; cursor: pointer;
+    border: 2px solid transparent; transition: all 0.25s;
+    text-transform: uppercase; position: relative;
+}
+.header-avatar::after {
+    content: '';
+    position: absolute; inset: -4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,0.15) 0%, transparent 70%);
+    opacity: 0; transition: opacity 0.25s;
+}
+.header-avatar:hover { border-color: var(--cyan); transform: scale(1.08); }
+.header-avatar:hover::after { opacity: 1; }
+
+.header-login-btn {
+    background: var(--pink); color: #fff; border: none;
+    padding: 8px 20px; border-radius: 20px;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;
+    cursor: pointer; transition: all 0.25s;
+    box-shadow: 0 0 0 0 rgba(255,45,107,0.4);
+    position: relative; overflow: hidden;
+}
+.header-login-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.25s;
+    border-radius: 20px;
+}
+.header-login-btn:hover {
+    background: #e0244f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(255,45,107,0.45);
+}
+.header-login-btn:hover::before { opacity: 1; }
+
+.admin-badge {
+    background: rgba(0,229,255,0.08); border: 1px solid var(--cyan);
+    color: var(--cyan); padding: 5px 12px; border-radius: 6px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
+    cursor: pointer; transition: all 0.25s;
+    position: relative; overflow: hidden;
+}
+.admin-badge::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(0,229,255,0.1);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.admin-badge:hover { box-shadow: 0 0 14px rgba(0,229,255,0.3); }
+.admin-badge:hover::before { transform: scaleX(1); }
+.admin-badge i { margin-right: 4px; }
+
+.modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85); z-index: 2000;
+    align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 12px; padding: 40px; width: 420px; max-width: 95vw;
+    position: relative; animation: modalIn 0.2s ease;
+}
+@keyframes modalIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; color: var(--muted); font-size: 1.2rem;
+    cursor: pointer; transition: color 0.2s;
+}
+.modal-close:hover { color: var(--text); }
+.modal h2 {
+    font-family: var(--font-display); font-size: 2rem; letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+.modal-tabs { display: flex; gap: 0; margin-bottom: 28px; border-bottom: 1px solid var(--border); }
+.modal-tab {
+    background: none; border: none; color: var(--muted2);
+    padding: 10px 20px; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: all 0.2s;
+}
+.modal-tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+.modal-form { display: none; }
+.modal-form.active { display: block; }
+.form-field { margin-bottom: 16px; }
+.form-field label {
+    display: block; font-size: 0.75rem; font-weight: 600;
+    color: var(--muted2); text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+.form-field input, .form-field textarea, .form-field select {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 6px; color: var(--text); padding: 11px 14px;
+    font-size: 0.95rem; font-family: var(--font-body); transition: border 0.2s;
+}
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+    outline: none; border-color: var(--cyan);
+}
+.form-field textarea { resize: vertical; min-height: 80px; }
+select option { background: #222; }
+.form-submit {
+    width: 100%; padding: 12px; border: none; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    background: var(--pink); color: #fff; margin-top: 8px;
+    transition: all 0.2s;
+}
+.form-submit:hover { background: #e0244f; transform: translateY(-1px); }
+.form-error {
+    background: rgba(255,45,107,0.1); border: 1px solid rgba(255,45,107,0.3);
+    color: #ff6b95; padding: 10px 14px; border-radius: 6px;
+    font-size: 0.85rem; margin-bottom: 16px; display: none;
+}
+.form-error.show { display: block; }
+
+
+#page-home { padding-top: var(--header-h); }
+
+.home-hero {
+    padding: 60px 40px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+}
+.home-hero-text h1 {
+    font-family: var(--font-display);
+    font-size: 3.5rem; line-height: 1; letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+.home-hero-text h1 span { color: var(--cyan); }
+.home-hero-text p { color: var(--muted2); font-size: 1rem; max-width: 420px; }
+
+.hero-stats { display: flex; gap: 32px; }
+.stat-item { text-align: center; }
+.stat-num {
+    font-family: var(--font-display); font-size: 2.2rem;
+    letter-spacing: 2px; color: var(--cyan);
+}
+.stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+.home-section { padding: 40px 40px 20px; }
+.section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+}
+.section-title {
+    font-family: var(--font-display); font-size: 1.6rem;
+    letter-spacing: 2px; color: var(--text);
+}
+.section-see-more {
+    font-size: 0.8rem; color: var(--muted2); cursor: pointer;
+    background: none; border: none; transition: color 0.2s;
+}
+.section-see-more:hover { color: var(--cyan); }
+
+
+.filter-bar {
+    display: flex; align-items: center; gap: 10px;
+    flex-wrap: wrap; padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+}
+.filter-btn {
+    background: transparent; border: 1px solid var(--border2);
+    color: var(--muted2); padding: 7px 18px; border-radius: 20px;
+    font-size: 0.85rem; cursor: pointer; font-family: var(--font-body);
+    display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+}
+.filter-btn:hover { border-color: var(--muted); color: var(--text); }
+.filter-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,0.07); }
+.search-wrap { margin-left: auto; position: relative; }
+.search-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; }
+.search-input {
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 20px; color: var(--text); padding: 8px 16px 8px 36px;
+    font-size: 0.85rem; width: 220px; font-family: var(--font-body);
+    transition: border 0.2s;
+}
+.search-input:focus { outline: none; border-color: var(--cyan); }
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px; padding: 28px 40px;
+}
+.media-card {
+    position: relative; border-radius: var(--radius);
+    overflow: hidden; cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: var(--surface);
+}
+.media-card:hover { transform: translateY(-6px); }
+.media-card.movie-card:hover { box-shadow: 0 12px 32px rgba(255,45,107,0.35); }
+.media-card.game-card:hover  { box-shadow: 0 12px 32px rgba(57,255,20,0.25); }
+.card-poster {
+    width: 100%; aspect-ratio: 2/3; object-fit: cover;
+    display: block; transition: opacity 0.2s;
+}
+.card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 50%);
+    opacity: 0; transition: opacity 0.25s;
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 12px;
+}
+.media-card:hover .card-overlay { opacity: 1; }
+.card-title { font-size: 0.8rem; font-weight: 600; line-height: 1.2; margin-bottom: 4px; }
+.card-type-badge {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+    padding: 2px 7px; border-radius: 3px; width: fit-content;
+}
+.movie-badge { background: rgba(255,45,107,0.2); color: var(--pink); border: 1px solid rgba(255,45,107,0.3); }
+.game-badge  { background: rgba(57,255,20,0.1); color: var(--green); border: 1px solid rgba(57,255,20,0.2); }
+
+.type-dot {
+    position: absolute; top: 8px; right: 8px;
+    width: 8px; height: 8px; border-radius: 50%;
+}
+.movie-dot { background: var(--pink); }
+.game-dot  { background: var(--green); }
+
+/* Pagination */
+.pagination {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; padding: 24px 40px 60px;
+}
+.page-btn {
+    background: var(--surface2); border: 1px solid var(--border2);
+    color: var(--text); padding: 8px 22px; border-radius: 20px;
+    font-size: 0.85rem; cursor: pointer; font-family: var(--font-body);
+    transition: all 0.2s;
+}
+.page-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.page-btn:disabled { opacity: 0.3; cursor: default; }
+.page-info { color: var(--muted2); font-size: 0.85rem; }
+
+
+#page-detail { padding-top: var(--header-h); }
+
+.detail-hero {
+    position: relative; min-height: 72vh;
+    display: flex; align-items: flex-end;
+    background-size: cover; background-position: center 20%;
+    padding: 60px 40px;
+}
+.detail-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(15,15,15,0.1) 0%, rgba(15,15,15,0.7) 60%, #0f0f0f 100%);
+}
+.detail-hero-content {
+    display: flex; gap: 40px; align-items: flex-end;
+    max-width: 1100px; z-index: 1; position: relative;
+}
+.detail-poster {
+    width: 230px; flex-shrink: 0;
+    border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+.detail-info { flex: 1; }
+.detail-type-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 4px; margin-bottom: 12px;
+}
+.movie-tag { background: rgba(255,45,107,0.15); color: var(--pink); border: 1px solid rgba(255,45,107,0.3); }
+.game-tag  { background: rgba(57,255,20,0.1); color: var(--green); border: 1px solid rgba(57,255,20,0.2); }
+.detail-title {
+    font-family: var(--font-display); font-size: 3.5rem;
+    line-height: 1; letter-spacing: 2px; margin-bottom: 10px;
+}
+.detail-meta { color: var(--muted2); font-size: 0.9rem; margin-bottom: 18px; }
+.detail-desc { color: #bbb; font-size: 1rem; max-width: 600px; line-height: 1.8; margin-bottom: 24px; }
+
+.detail-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.fav-btn {
+    background: none; border: 2px solid #444; color: #666;
+    padding: 10px 22px; border-radius: 8px; font-size: 0.9rem;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer; font-family: var(--font-body);
+    transition: all 0.2s;
+}
+.fav-btn.faved { border-color: var(--pink); color: var(--pink); background: rgba(255,45,107,0.08); }
+.fav-btn:hover:not(.faved) { border-color: #888; color: var(--text); }
+
+.star-rating { display: flex; gap: 4px; }
+.star {
+    font-size: 1.5rem; color: #333; cursor: pointer;
+    transition: color 0.15s, transform 0.15s;
+    background: none; border: none; padding: 0;
+}
+.star:hover, .star.active { color: var(--gold); transform: scale(1.2); }
+.rating-label { color: var(--muted2); font-size: 0.8rem; align-self: center; margin-left: 4px; }
+
+
+.detail-body { padding: 50px 40px; max-width: 900px; }
+.section-heading {
+    font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 2px;
+    margin-bottom: 24px; color: var(--text);
+}
+
+.comment-form { margin-bottom: 32px; }
+.comment-input {
+    width: 100%; background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 8px; color: var(--text); padding: 14px;
+    font-size: 0.95rem; font-family: var(--font-body);
+    resize: vertical; min-height: 90px; transition: border 0.2s;
+}
+.comment-input:focus { outline: none; border-color: var(--cyan); }
+.comment-post-btn {
+    margin-top: 10px; background: var(--cyan); color: #000;
+    border: none; padding: 10px 28px; border-radius: 6px;
+    font-weight: 700; font-size: 0.9rem; cursor: pointer;
+    transition: all 0.2s;
+}
+.comment-post-btn:hover { background: #00ccdd; }
+.comment-guest-note { color: var(--muted); font-size: 0.85rem; margin-top: 8px; }
+.comment-guest-note span { color: var(--cyan); cursor: pointer; }
+.comment-guest-note span:hover { text-decoration: underline; }
+
+.comment-list { display: flex; flex-direction: column; gap: 16px; }
+.comment-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px;
+}
+.comment-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.comment-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700;
+}
+.comment-username { font-weight: 600; font-size: 0.9rem; }
+.comment-admin-tag {
+    background: rgba(0,229,255,0.1); color: var(--cyan);
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+    padding: 2px 7px; border-radius: 3px;
+}
+.comment-time { color: var(--muted); font-size: 0.8rem; margin-left: auto; }
+.comment-text { color: #ccc; font-size: 0.9rem; line-height: 1.6; }
+.comment-delete {
+    background: none; border: none; color: var(--muted);
+    font-size: 0.75rem; cursor: pointer; margin-left: 8px;
+    transition: color 0.2s;
+}
+.comment-delete:hover { color: var(--pink); }
+.no-comments { color: var(--muted); font-size: 0.9rem; }
+
+
+#page-profile { padding-top: var(--header-h); }
+
+.profile-hero {
+    padding: 50px 40px;
+    display: flex; align-items: center; gap: 36px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+.profile-avatar-lg {
+    width: 100px; height: 100px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 3rem; letter-spacing: 2px;
+    flex-shrink: 0; border: 3px solid transparent;
+    position: relative; cursor: pointer; overflow: hidden;
+}
+.profile-avatar-lg img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+}
+.avatar-upload-overlay {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+    font-size: 1.3rem; color: #fff;
+}
+.profile-avatar-lg:hover .avatar-upload-overlay { opacity: 1; }
+.profile-info h1 { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: 2px; }
+.profile-info .profile-role {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+    color: var(--cyan); text-transform: uppercase; margin-bottom: 8px;
+}
+.profile-info .profile-bio { color: var(--muted2); font-size: 0.95rem; max-width: 500px; margin-top: 8px; }
+.profile-info .profile-joined { color: var(--muted); font-size: 0.8rem; margin-top: 6px; }
+.profile-stats { display: flex; gap: 28px; margin-top: 16px; }
+.p-stat-num { font-family: var(--font-display); font-size: 1.8rem; color: var(--cyan); }
+.p-stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.edit-bio-btn {
+    background: var(--surface2); border: 1px solid var(--border2);
+    color: var(--muted2); padding: 8px 18px; border-radius: 6px;
+    font-size: 0.85rem; cursor: pointer; font-family: var(--font-body);
+    margin-top: 12px; display: inline-flex; align-items: center; gap: 6px;
+    transition: all 0.2s;
+}
+.edit-bio-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.profile-tabs {
+    display: flex; gap: 0; padding: 0 40px;
+    border-bottom: 1px solid var(--border);
+}
+.profile-tab {
+    background: none; border: none; color: var(--muted2);
+    padding: 16px 20px; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; font-family: var(--font-body);
+    transition: all 0.2s;
+}
+.profile-tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+.profile-tab-content { display: none; padding: 32px 40px; }
+.profile-tab-content.active { display: block; }
+
+.ratings-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 14px;
+}
+.rated-card {
+    position: relative; cursor: pointer;
+    border-radius: var(--radius); overflow: hidden;
+    background: var(--surface);
+    transition: transform 0.2s;
+}
+.rated-card:hover { transform: translateY(-4px); }
+.rated-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+.rated-card-stars {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 20px 8px 8px;
+    font-size: 0.75rem; color: var(--gold); text-align: center;
+}
+.empty-state { 
+    text-align: center; color: var(--muted); 
+    padding: 80px 0; font-size: 1rem;
+}
+.empty-state i { font-size: 3rem; margin-bottom: 16px; display: block; opacity: 0.3; }
+
+#page-admin { padding-top: var(--header-h); }
+
+.admin-layout { display: grid; grid-template-columns: 320px 1fr; min-height: calc(100vh - var(--header-h)); }
+.admin-sidebar {
+    background: var(--surface); border-right: 1px solid var(--border);
+    padding: 32px 24px; position: sticky; top: var(--header-h);
+    height: calc(100vh - var(--header-h)); overflow-y: auto;
+}
+.admin-sidebar h2 {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 24px;
+}
+.admin-main { padding: 32px 40px; }
+.admin-main h2 {
+    font-family: var(--font-display); font-size: 1.8rem; letter-spacing: 2px;
+    margin-bottom: 28px;
+}
+.admin-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--surface); border-radius: 8px; overflow: hidden;
+}
+.admin-table th {
+    background: var(--surface2); padding: 12px 16px;
+    text-align: left; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 1px; color: var(--muted); text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+}
+.admin-table td {
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    font-size: 0.9rem; vertical-align: middle;
+}
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.btn-sm {
+    padding: 5px 14px; border-radius: 5px; font-size: 0.8rem;
+    font-weight: 600; cursor: pointer; border: none; font-family: var(--font-body);
+    transition: all 0.2s;
+}
+.btn-edit { background: rgba(0,229,255,0.1); color: var(--cyan); }
+.btn-edit:hover { background: rgba(0,229,255,0.2); }
+.btn-delete { background: rgba(255,45,107,0.1); color: var(--pink); margin-left: 6px; }
+.btn-delete:hover { background: rgba(255,45,107,0.2); }
+.btn-primary {
+    background: var(--cyan); color: #000; border: none;
+    padding: 11px 28px; border-radius: 8px; font-size: 0.9rem;
+    font-weight: 700; cursor: pointer; font-family: var(--font-body);
+    transition: all 0.2s; width: 100%; margin-top: 8px;
+}
+.btn-primary:hover { background: #00ccdd; }
+
+
+.type-movie { color: var(--pink); font-size: 0.75rem; font-weight: 700; }
+.type-game  { color: var(--green); font-size: 0.75rem; font-weight: 700; }
+
+
+.img-preview {
+    width: 100%; aspect-ratio: 2/3; object-fit: cover;
+    border-radius: 6px; border: 1px solid var(--border); margin-top: 8px;
+    display: none;
+}
+.img-preview.show { display: block; }
+.fetch-img-btn {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+    color: var(--muted2); padding: 9px; border-radius: 6px;
+    font-size: 0.8rem; cursor: pointer; font-family: var(--font-body);
+    margin-top: 6px; transition: all 0.2s;
+}
+.fetch-img-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.admin-section-divider {
+    height: 1px; background: var(--border); margin: 24px 0;
+}
+
+
+.review-actions {
+    display: flex; align-items: center; gap: 12px; margin-top: 10px;
+}
+.review-like-btn {
+    background: none; border: none; color: var(--muted);
+    font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 5px;
+    padding: 4px 8px; border-radius: 6px; transition: all 0.2s;
+    font-family: var(--font-body);
+}
+.review-like-btn:hover { color: var(--pink); background: rgba(255,45,107,0.08); }
+.review-like-btn.liked { color: var(--pink); }
+.review-reply-btn {
+    background: none; border: none; color: var(--muted);
+    font-size: 0.8rem; cursor: pointer; padding: 4px 8px;
+    border-radius: 6px; transition: all 0.2s; font-family: var(--font-body);
+}
+.review-reply-btn:hover { color: var(--cyan); background: rgba(0,229,255,0.08); }
+.reply-form {
+    margin-top: 10px; display: none;
+}
+.reply-form.open { display: block; }
+.reply-input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 6px; color: var(--text); padding: 10px 12px;
+    font-size: 0.88rem; font-family: var(--font-body); resize: none;
+    min-height: 64px; transition: border 0.2s;
+}
+.reply-input:focus { outline: none; border-color: var(--cyan); }
+.reply-post-btn {
+    margin-top: 6px; background: rgba(0,229,255,0.12); color: var(--cyan);
+    border: 1px solid rgba(0,229,255,0.3); padding: 6px 18px;
+    border-radius: 6px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; font-family: var(--font-body); transition: all 0.2s;
+}
+.reply-post-btn:hover { background: rgba(0,229,255,0.2); }
+.replies-list {
+    margin-top: 10px; border-left: 2px solid var(--border2); padding-left: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+}
+.reply-item {
+    background: rgba(255,255,255,0.02); border-radius: 6px; padding: 12px;
+}
+.review-feed-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px; margin-bottom: 14px;
+    transition: border-color 0.2s;
+}
+.review-feed-card:hover { border-color: var(--border2); }
+.review-feed-media {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    cursor: pointer;
+}
+.review-feed-media:hover .review-feed-title { color: var(--cyan); }
+.review-feed-thumb {
+    width: 38px; height: 56px; object-fit: cover; border-radius: 4px;
+    background: var(--surface2); flex-shrink: 0;
+}
+.review-feed-title {
+    font-weight: 600; font-size: 0.95rem; transition: color 0.2s;
+}
+.review-feed-type {
+    font-size: 0.7rem; color: var(--muted); margin-top: 2px;
+}
+
+.toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--surface2); border: 1px solid var(--border2);
+    color: var(--text); padding: 12px 24px; border-radius: 8px;
+    font-size: 0.9rem; z-index: 9999; opacity: 0;
+    transition: all 0.3s; pointer-events: none;
+    display: flex; align-items: center; gap: 8px;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: rgba(57,255,20,0.4); }
+.toast.error { border-color: rgba(255,45,107,0.4); }
+
+
+@media (max-width: 768px) {
+    #site-header { padding: 0 20px; }
+    .home-hero, .filter-bar, .media-grid, .home-section,
+    .detail-hero, .detail-body, .profile-hero, .profile-tabs,
+    .profile-tab-content, .admin-main { padding-left: 20px; padding-right: 20px; }
+    .detail-hero-content { flex-direction: column; align-items: flex-start; }
+    .detail-poster { width: 160px; }
+    .detail-title { font-size: 2.2rem; }
+    .admin-layout { grid-template-columns: 1fr; }
+    .admin-sidebar { position: static; height: auto; }
+    .media-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+}
+    </style>
+</head>
+<body>
+
+
+<header id="site-header">
+    <div style="display:flex;align-items:center;gap:4px">
+        <div class="header-logo" onclick="goTo('home')">
+            CROSS<span>MEDIA</span>
+        </div>
+        <button class="header-nav-link" onclick="goTo('home')">Browse</button>
+        <button class="header-nav-link" onclick="goTo('reviews')">Reviews</button>
+    </div>
+    <div class="header-right" id="header-right">
+        <!-- Populated by JS -->
+    </div>
+</header>
+
+
+<div class="modal-overlay" id="auth-modal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeAuthModal()"><i class="fa fa-times"></i></button>
+        <h2>SIGN IN</h2>
+        <p style="color:var(--muted2);font-size:0.85rem;margin-bottom:20px;">Track your favorites, rate media, join the community.</p>
+        <div class="modal-tabs">
+            <button class="modal-tab active" onclick="switchAuthTab('login')">Login</button>
+            <button class="modal-tab" onclick="switchAuthTab('register')">Register</button>
+        </div>
+
+        
+        <div class="modal-form active" id="form-login">
+            <div class="form-error" id="login-error"></div>
+            <div class="form-field"><label>Username</label><input type="text" id="login-username" placeholder="your_username" autocomplete="username"></div>
+            <div class="form-field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"></div>
+            <button class="form-submit" onclick="doLogin()">Login</button>
+        </div>
+
+        
+        <div class="modal-form" id="form-register">
+            <div class="form-error" id="reg-error"></div>
+            <div class="form-field"><label>Username</label><input type="text" id="reg-username" placeholder="choose_a_username" autocomplete="username"></div>
+            <div class="form-field"><label>Password</label><input type="password" id="reg-password" placeholder="at least 6 chars" autocomplete="new-password"></div>
+            <div class="form-field"><label>Bio <span style="color:var(--muted);font-weight:400">(optional)</span></label><textarea id="reg-bio" placeholder="Tell the community about yourself…" rows="3"></textarea></div>
+            <button class="form-submit" onclick="doRegister()">Create Account</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<div class="page" id="page-home">
+    <div class="home-hero">
+        <div class="home-hero-text">
+            <h1>YOUR<br><span>MEDIA</span><br>UNIVERSE</h1>
+            <p>Discover, rate, and track movies &amp; games. Build your personal collection.</p>
+        </div>
+        <div class="hero-stats" id="hero-stats"></div>
+    </div>
+
+    <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter(this,'all')">
+            <i class="fa fa-border-all"></i> All
+        </button>
+        <button class="filter-btn" data-filter="movie" onclick="setFilter(this,'movie')">
+            <i class="fa fa-clapperboard"></i> Movies
+        </button>
+        <button class="filter-btn" data-filter="game" onclick="setFilter(this,'game')">
+            <i class="fa fa-gamepad"></i> Games
+        </button>
+        <div class="search-wrap">
+            <i class="fa fa-search"></i>
+            <input type="text" class="search-input" id="search-input" placeholder="Search…" oninput="onSearch(this.value)">
+        </div>
+    </div>
+
+    <div class="media-grid" id="media-grid"></div>
+    <div id="empty-msg" style="display:none; text-align:center; color:var(--muted); padding:80px; font-size:1rem">No results found.</div>
+
+    <div class="pagination">
+        <button class="page-btn" id="prev-btn" onclick="changePage(-1)" disabled>← Prev</button>
+        <span class="page-info" id="page-info"></span>
+        <button class="page-btn" id="next-btn" onclick="changePage(1)">Next →</button>
+    </div>
+</div>
+
+
+<div class="page" id="page-detail">
+    <section class="detail-hero" id="detail-hero">
+        <div class="detail-hero-content">
+            <img class="detail-poster" id="detail-poster" src="" alt="">
+            <div class="detail-info">
+                <div class="detail-type-tag" id="detail-tag"></div>
+                <h1 class="detail-title" id="detail-title">Loading…</h1>
+                <p class="detail-meta" id="detail-meta"></p>
+                <p class="detail-desc" id="detail-desc"></p>
+                <div class="detail-actions">
+                    <button class="fav-btn" id="fav-btn" onclick="toggleFav()">
+                        <i class="fa fa-heart"></i> <span id="fav-text">Add to Favorites</span>
+                    </button>
+                    <div class="star-rating" id="star-rating">
+                        <button class="star" data-star="1" onclick="setRating(1)">★</button>
+                        <button class="star" data-star="2" onclick="setRating(2)">★</button>
+                        <button class="star" data-star="3" onclick="setRating(3)">★</button>
+                        <button class="star" data-star="4" onclick="setRating(4)">★</button>
+                        <button class="star" data-star="5" onclick="setRating(5)">★</button>
+                        <span class="rating-label" id="rating-label">Rate this</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="detail-body">
+        <h3 class="section-heading">Reviews</h3>
+        <div class="comment-form" id="comment-form-wrap">
+            <textarea class="comment-input" id="comment-input" placeholder="Share your thoughts on this…"></textarea>
+            <button class="comment-post-btn" onclick="postReview()">Post Review</button>
+        </div>
+        <p class="comment-guest-note" id="comment-guest-note" style="display:none">
+            <span onclick="openAuthModal()">Login or register</span> to leave a review.
+        </p>
+        <div class="comment-list" id="comment-list"></div>
+    </main>
+</div>
+
+<div class="page" id="page-reviews">
+    <div style="padding: calc(var(--header-h) + 40px) 40px 20px">
+        <h1 style="font-family:var(--font-display);font-size:2.2rem;letter-spacing:3px;margin-bottom:6px">RECENT <span style="color:var(--cyan)">REVIEWS</span></h1>
+        <p style="color:var(--muted2);font-size:0.9rem;margin-bottom:32px">What the community has been saying</p>
+        <div id="reviews-feed-list"></div>
+    </div>
+</div>
+
+
+<div class="page" id="page-profile">
+    <div class="profile-hero">
+        <div class="profile-avatar-lg" id="profile-avatar-lg" onclick="triggerAvatarUpload()">
+            <div class="avatar-upload-overlay"><i class="fa fa-camera"></i></div>
+        </div>
+        <input type="file" id="avatar-file-input" accept="image/*" style="display:none" onchange="handleAvatarUpload(this)">
+        <div class="profile-info">
+            <div class="profile-role" id="profile-role-tag"></div>
+            <h1 id="profile-name">USERNAME</h1>
+            <p class="profile-bio" id="profile-bio-text"></p>
+            <p class="profile-joined" id="profile-joined"></p>
+            <div class="profile-stats" id="profile-stats-row"></div>
+            <button class="edit-bio-btn" id="edit-bio-btn" onclick="openEditBio()">
+                <i class="fa fa-pencil"></i> Edit Bio
+            </button>
+            <button class="edit-bio-btn" id="profile-logout-btn" onclick="doLogout()" style="border-color:rgba(255,45,107,0.4);color:var(--pink);margin-left:8px">
+                <i class="fa fa-right-from-bracket"></i> Log Out
+            </button>
+        </div>
+    </div>
+
+    <div class="profile-tabs" id="profile-tabs">
+        <button class="profile-tab active" onclick="switchProfileTab('favorites')">Favorites</button>
+        <button class="profile-tab" onclick="switchProfileTab('ratings')">Ratings</button>
+        <button class="profile-tab" onclick="switchProfileTab('reviews')">Reviews</button>
+    </div>
+
+    <div class="profile-tab-content active" id="tab-favorites">
+        <div class="ratings-list" id="favorites-grid"></div>
+    </div>
+    <div class="profile-tab-content" id="tab-ratings">
+        <div class="ratings-list" id="ratings-grid"></div>
+    </div>
+    <div class="profile-tab-content" id="tab-reviews">
+        <div id="profile-reviews-list"></div>
+    </div>
+</div>
+
+
+<div class="page" id="page-admin">
+    <div class="admin-layout">
+        <div class="admin-sidebar">
+            <h2>Add / Edit Media</h2>
+            <input type="hidden" id="edit-id">
+            <div class="form-field"><label>Type</label>
+                <select id="a-type">
+                    <option value="movie">🎬 Movie</option>
+                    <option value="game">🎮 Game</option>
+                </select>
+            </div>
+            <div class="form-field"><label>Title</label><input type="text" id="a-title" placeholder="e.g. The Godfather"></div>
+            <div class="form-field"><label>Year</label><input type="text" id="a-year" placeholder="e.g. 1972"></div>
+            <div class="form-field" id="a-director-wrap"><label>Director</label><input type="text" id="a-director" placeholder="e.g. Francis Ford Coppola"></div>
+            <div class="form-field" id="a-developer-wrap" style="display:none"><label>Developer</label><input type="text" id="a-developer" placeholder="e.g. FromSoftware"></div>
+            <div class="form-field"><label>Duration</label><input type="text" id="a-duration" placeholder="e.g. 2h 55m or ~60h"></div>
+            <div class="form-field"><label>Description</label><textarea id="a-desc" placeholder="Short synopsis…"></textarea></div>
+            <div class="form-field">
+                <label>Poster URL <span style="color:var(--muted)">(leave empty to auto-fetch)</span></label>
+                <input type="text" id="a-image" placeholder="https://…" oninput="previewAdminImg()">
+                <img id="admin-img-preview" class="img-preview" alt="">
+                <button class="fetch-img-btn" onclick="adminFetchImage()"><i class="fa fa-wand-magic-sparkles"></i> Auto-fetch Poster</button>
+            </div>
+            <div class="admin-section-divider"></div>
+            <button class="btn-primary" onclick="adminSave()">Save</button>
+            <button class="btn-primary" style="background:var(--surface2);color:var(--muted2);margin-top:8px" onclick="adminClear()">Clear Form</button>
+        </div>
+
+        <div class="admin-main">
+            <h2>Media Library</h2>
+            <table class="admin-table" id="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Title</th><th>Type</th><th>Year</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="db.js?v=20260403"></script>
+<script>
+let currentPage  = 1;
+let activeFilter = 'all';
+let searchQuery  = '';
+let currentDetailId = null;
+let _allMedia    = [];   // in-memory cache, refreshed on navigation
+const ITEMS_PER_PAGE = 18;
+
+async function navigate(page, param) {
+    const current = document.querySelector('.page.active');
+
+    const doNav = async () => {
+        document.querySelectorAll('.page').forEach(p => {
+            p.classList.remove('active');
+            p.classList.remove('leaving');
+        });
+        const el = document.getElementById('page-' + page);
+        if (el) el.classList.add('active');
+        window.scrollTo(0, 0);
+
+        if (page === 'home')    await renderHome();
+        if (page === 'detail')  await renderDetail(param);
+        if (page === 'profile') await renderProfile();
+        if (page === 'admin')   await renderAdmin();
+        if (page === 'reviews') await renderReviewsFeed();
+        updateHeader();
+    };
+
+    if (current && current.id !== 'page-' + page) {
+        current.classList.add('leaving');
+        await new Promise(r => setTimeout(r, 180));
+        await doNav();
+    } else {
+        await doNav();
+    }
+}
+
+function handleHash() {
+    const hash = window.location.hash.slice(1) || 'home';
+    const [page, param] = hash.split(':');
+    navigate(page, param);
+}
+window.addEventListener('hashchange', handleHash);
+
+function goTo(page, param) {
+    window.location.hash = param ? `${page}:${param}` : page;
+}
+
+
+function renderAvatar(username, color, avatarUrl, size = 30, extraStyle = '') {
+    if (avatarUrl) {
+        return `<img src="${escHtml(avatarUrl)}" alt="${escHtml(username)}"
+            style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;flex-shrink:0;${extraStyle}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;width:${size}px;height:${size}px;border-radius:50%;background:${color}22;color:${color};align-items:center;justify-content:center;font-size:${Math.round(size*0.4)}px;font-weight:700;flex-shrink:0;${extraStyle}">${username.slice(0,2).toUpperCase()}</div>`;
+    }
+    return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color}22;color:${color};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.4)}px;font-weight:700;flex-shrink:0;${extraStyle}">${username.slice(0,2).toUpperCase()}</div>`;
+}
+
+function updateHeader() {
+    const session = authGetSession();
+    const right = document.getElementById('header-right');
+    if (!session) {
+        right.innerHTML = `
+            <button class="header-login-btn" onclick="openAuthModal()">Sign In</button>`;
+    } else if (session.is_admin) {
+        right.innerHTML = `
+            <button class="admin-badge" onclick="goTo('admin')"><i class="fa fa-shield-halved"></i> ADMIN</button>
+            <div class="header-avatar" style="background:rgba(0,229,255,0.15);color:var(--cyan);border-color:var(--cyan)" onclick="doLogout()">AD</div>`;
+    } else {
+        const color = session.avatar_color || '#888';
+        const avatarUrl = session.avatar_url || null;
+        if (avatarUrl) {
+            right.innerHTML = `
+                <div class="header-avatar" style="padding:0;overflow:hidden;border-color:${color}" onclick="goTo('profile')" title="${session.username}">
+                    <img src="${escHtml(avatarUrl)}" alt="${session.username}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"
+                        onerror="this.parentElement.innerHTML='${session.username.slice(0,2).toUpperCase()}'">
+                </div>`;
+        } else {
+            right.innerHTML = `
+                <div class="header-avatar" style="background:${color}22;color:${color};border-color:${color}" onclick="goTo('profile')" title="${session.username}">${session.username.slice(0,2).toUpperCase()}</div>`;
+        }
+    }
+}
+
+function openAuthModal() { document.getElementById('auth-modal').classList.add('open'); }
+function closeAuthModal() { document.getElementById('auth-modal').classList.remove('open'); }
+
+document.getElementById('auth-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeAuthModal();
+});
+
+function switchAuthTab(tab) {
+    document.querySelectorAll('.modal-tab').forEach((t,i) => {
+        t.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'register' && i === 1));
+    });
+    document.getElementById('form-login').classList.toggle('active', tab === 'login');
+    document.getElementById('form-register').classList.toggle('active', tab === 'register');
+}
+
+async function doLogin() {
+    const u = document.getElementById('login-username').value.trim();
+    const p = document.getElementById('login-password').value;
+    const err = document.getElementById('login-error');
+    if (!u || !p) { err.textContent = 'Please fill in all fields.'; err.classList.add('show'); return; }
+    const btn = document.querySelector('#form-login .form-submit');
+    btn.textContent = 'Logging in…'; btn.disabled = true;
+    const result = await authLogin(u, p);
+    btn.textContent = 'Login'; btn.disabled = false;
+    if (!result.ok) { err.textContent = result.error; err.classList.add('show'); return; }
+    err.classList.remove('show');
+    closeAuthModal();
+    showToast('Welcome back, ' + u + '!', 'success');
+    updateHeader();
+    if (result.role === 'admin') goTo('admin');
+}
+
+async function doRegister() {
+    const u = document.getElementById('reg-username').value.trim();
+    const p = document.getElementById('reg-password').value;
+    const b = document.getElementById('reg-bio').value.trim();
+    const err = document.getElementById('reg-error');
+    if (!u || !p) { err.textContent = 'Username and password required.'; err.classList.add('show'); return; }
+    if (p.length < 6) { err.textContent = 'Password must be at least 6 characters.'; err.classList.add('show'); return; }
+    const btn = document.querySelector('#form-register .form-submit');
+    btn.textContent = 'Creating…'; btn.disabled = true;
+    const result = await authRegister(u, p, b);
+    btn.textContent = 'Create Account'; btn.disabled = false;
+    if (!result.ok) { err.textContent = result.error; err.classList.add('show'); return; }
+    err.classList.remove('show');
+    closeAuthModal();
+    showToast('Account created! Welcome, ' + u + ' 🎉', 'success');
+    updateHeader();
+    goTo('profile');
+}
+
+function doLogout() {
+    authLogout();
+    showToast('Logged out.', 'success');
+    updateHeader();
+    goTo('home');
+}
+
+
+function setFilter(btn, f) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = f; currentPage = 1; renderGrid();
+}
+
+let searchTimer;
+function onSearch(val) {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        searchQuery = val.trim().toLowerCase();
+        currentPage = 1; renderGrid();
+    }, 200);
+}
+
+function getFiltered() {
+    let d = _allMedia;
+    if (activeFilter !== 'all') d = d.filter(i => i.type === activeFilter);
+    if (searchQuery) d = d.filter(i => i.title.toLowerCase().includes(searchQuery));
+    return d;
+}
+
+function changePage(dir) {
+    const total = Math.ceil(getFiltered().length / ITEMS_PER_PAGE);
+    currentPage = Math.max(1, Math.min(total, currentPage + dir));
+    renderGrid();
+}
+
+function renderGrid() {
+    const filtered   = getFiltered();
+    const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+    const slice      = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+    const grid       = document.getElementById('media-grid');
+    const empty      = document.getElementById('empty-msg');
+    const prevBtn    = document.getElementById('prev-btn');
+    const nextBtn    = document.getElementById('next-btn');
+    const pageInfo   = document.getElementById('page-info');
+
+    if (slice.length === 0) {
+        grid.innerHTML = ''; empty.style.display = 'block';
+    } else {
+        empty.style.display = 'none';
+        grid.innerHTML = slice.map(item => {
+            const img = item.image || `https://placehold.co/300x450/141414/333?text=${encodeURIComponent(item.title.slice(0,12))}&font=oswald`;
+            return `<div class="media-card ${item.type}-card" onclick="goTo('detail','${item.id}')">
+                <div class="type-dot ${item.type}-dot"></div>
+                <img class="card-poster" id="card-img-${item.id}" src="${img}" alt="${item.title}" loading="lazy">
+                <div class="card-overlay">
+                    <span class="card-type-badge ${item.type}-badge">${item.type.toUpperCase()}</span>
+                    <div class="card-title">${item.title}</div>
+                </div>
+            </div>`;
+        }).join('');
+        resolveImages(slice, (id, url) => {
+            const el = document.getElementById(`card-img-${id}`);
+            if (el) el.src = url;
+        });
+    }
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= totalPages;
+    pageInfo.textContent = totalPages > 1 ? `${currentPage} / ${totalPages}` : '';
+}
+
+async function renderHome() {
+    const grid = document.getElementById('media-grid');
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:60px">Loading…</div>';
+    try {
+        _allMedia = await dbGetAll();
+    } catch(e) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--pink);padding:60px">
+            <i class="fa fa-triangle-exclamation" style="font-size:2rem;margin-bottom:12px;display:block"></i>
+            Could not load media.<br><span style="font-size:0.8rem;color:var(--muted);margin-top:8px;display:block">${e.message}</span>
+            <button onclick="renderHome()" style="margin-top:16px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:8px 20px;border-radius:6px;cursor:pointer;font-family:var(--font-body)">Retry</button>
+        </div>`;
+        return;
+    }
+    renderGrid();
+    const movies = _allMedia.filter(i => i.type === 'movie').length;
+    const games  = _allMedia.filter(i => i.type === 'game').length;
+    document.getElementById('hero-stats').innerHTML = `
+        <div class="stat-item"><div class="stat-num">${_allMedia.length}</div><div class="stat-label">Total</div></div>
+        <div class="stat-item"><div class="stat-num">${movies}</div><div class="stat-label">Movies</div></div>
+        <div class="stat-item"><div class="stat-num">${games}</div><div class="stat-label">Games</div></div>`;
+}
+
+async function renderDetail(id) {
+    currentDetailId = Number(id);
+    document.getElementById('detail-title').textContent = 'Loading…';
+
+    const item = await dbGetById(id);
+    if (!item) { document.getElementById('detail-title').textContent = 'Not found.'; return; }
+
+    document.title = `${item.title} — CROSSMEDIA`;
+    const isMovie = item.type === 'movie';
+
+    document.getElementById('detail-tag').textContent = isMovie ? '🎬 MOVIE' : '🎮 GAME';
+    document.getElementById('detail-tag').className   = `detail-type-tag ${isMovie ? 'movie-tag' : 'game-tag'}`;
+    document.getElementById('detail-title').textContent = item.title;
+    document.getElementById('detail-meta').textContent  = isMovie
+        ? `${item.year || ''} • Dir. ${item.director || 'Unknown'} • ${item.duration || ''}`
+        : `${item.year || ''} • Dev. ${item.developer || 'Unknown'} • ${item.duration || ''}`;
+    document.getElementById('detail-desc').textContent = item.description || '';
+
+    const posterEl = document.getElementById('detail-poster');
+    posterEl.src = item.image || `https://placehold.co/300x450/141414/333?text=${encodeURIComponent(item.title.slice(0,12))}&font=oswald`;
+    resolveImage(item).then(url => {
+        posterEl.src = url;
+        document.getElementById('detail-hero').style.backgroundImage =
+            `linear-gradient(to bottom, rgba(15,15,15,0.1) 0%, rgba(15,15,15,0.65) 55%, #0f0f0f 100%), url('${url}')`;
+    });
+
+    const session = authGetSession();
+    const favBtn  = document.getElementById('fav-btn');
+    const favText = document.getElementById('fav-text');
+    if (!session || session.is_admin) {
+        favBtn.style.display = 'none';
+    } else {
+        favBtn.style.display = 'flex';
+        const isFav = await userIsFavorite(item.id);
+        favBtn.classList.toggle('faved', isFav);
+        favText.textContent = isFav ? 'In Favorites' : 'Add to Favorites';
+    }
+
+    const userRating = session && !session.is_admin ? await userGetRating(item.id) : 0;
+    renderStars(userRating);
+    const starEl = document.getElementById('star-rating');
+    starEl.style.opacity = (!session || session.is_admin) ? '0.3' : '1';
+    starEl.style.pointerEvents = (!session || session.is_admin) ? 'none' : 'auto';
+
+    const isLoggedIn = !!session;
+    document.getElementById('comment-form-wrap').style.display = isLoggedIn ? 'block' : 'none';
+    document.getElementById('comment-guest-note').style.display = isLoggedIn ? 'none' : 'block';
+    await renderReviews(item.id);
+}
+
+function renderStars(rating) {
+    document.querySelectorAll('.star').forEach(s => {
+        s.classList.toggle('active', Number(s.dataset.star) <= rating);
+    });
+    const labels = ['Rate this', '★ Poor', '★★ Fair', '★★★ Good', '★★★★ Great', '★★★★★ Masterpiece'];
+    document.getElementById('rating-label').textContent = labels[rating] || 'Rate this';
+}
+
+async function setRating(stars) {
+    await userSetRating(currentDetailId, stars);
+    renderStars(stars);
+    showToast('Rating saved!', 'success');
+}
+
+async function toggleFav() {
+    const favBtn  = document.getElementById('fav-btn');
+    const favText = document.getElementById('fav-text');
+    favBtn.disabled = true;
+    const added = await userToggleFavorite(currentDetailId);
+    favBtn.disabled = false;
+    favBtn.classList.toggle('faved', added);
+    favText.textContent = added ? 'In Favorites' : 'Add to Favorites';
+    showToast(added ? 'Added to favorites ❤' : 'Removed from favorites', added ? 'success' : '');
+}
+
+function avatarColor(username) {
+    const colors = ['#ff3131','#39ff14','#00ffff','#ff8c00','#bf5fff','#ff69b4'];
+    return colors[username.charCodeAt(0) % colors.length];
+}
+
+function formatDate(ts) {
+    if (!ts) return 'Just now';
+    return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function buildReviewHtml(c, session, likedSet, likeCounts, isReply = false) {
+    const isOwn    = session && session.username === c.username;
+    const isAdmin  = session && session.is_admin;
+    const canDel   = isOwn || isAdmin;
+    const color    = avatarColor(c.username);
+    const adminTag = c.is_admin ? '<span class="comment-admin-tag">ADMIN</span>' : '';
+    const delBtn   = canDel ? `<button class="comment-delete" onclick="doDeleteReview(${c.media_id},${c.id},${!!isReply})"><i class="fa fa-trash"></i></button>` : '';
+    const liked    = likedSet.has(c.id);
+    const count    = likeCounts[c.id] || 0;
+    const likeClass = liked ? 'review-like-btn liked' : 'review-like-btn';
+    const likeBtn  = session && !session.is_admin
+        ? `<button class="${likeClass}" id="like-btn-${c.id}" onclick="toggleLike(${c.id})"><i class="fa fa-heart"></i> <span id="like-count-${c.id}">${count}</span></button>`
+        : (count > 0 ? `<span style="color:var(--muted);font-size:0.8rem"><i class="fa fa-heart"></i> ${count}</span>` : '');
+    const replyBtn = (!isReply && session && !session.is_admin)
+        ? `<button class="review-reply-btn" onclick="toggleReplyForm(${c.id})"><i class="fa fa-reply"></i> Reply</button>`
+        : '';
+
+    return `<div class="comment-item" id="review-${c.id}">
+        <div class="comment-header">
+            <div class="comment-avatar" style="background:${color}22;color:${color};padding:0;overflow:hidden">${renderAvatar(c.username, color, c.avatar_url || null, 30)}</div>
+            <span class="comment-username">${escHtml(c.username)}</span>
+            ${adminTag}
+            <span class="comment-time">${formatDate(c.created_at)}</span>
+            ${delBtn}
+        </div>
+        <p class="comment-text">${escHtml(c.text)}</p>
+        <div class="review-actions">
+            ${likeBtn}
+            ${replyBtn}
+        </div>
+        ${!isReply ? `
+        <div class="reply-form" id="reply-form-${c.id}">
+            <textarea class="reply-input" id="reply-input-${c.id}" placeholder="Write a reply…" rows="2"></textarea>
+            <button class="reply-post-btn" onclick="postReply(${c.media_id}, ${c.id})">Reply</button>
+        </div>
+        <div class="replies-list" id="replies-${c.id}"></div>` : ''}
+    </div>`;
+}
+
+async function renderReviews(mediaId) {
+    const session  = authGetSession();
+    const reviews  = await getReviews(mediaId);
+    const list     = document.getElementById('comment-list');
+
+    if (!reviews || reviews.length === 0) {
+        list.innerHTML = '<p class="no-comments">No reviews yet. Be the first!</p>';
+        return;
+    }
+
+    const allIds     = reviews.map(r => r.id);
+    const [likedSet, likeCounts, avatarMap] = await Promise.all([
+        getReviewLikes(allIds),
+        getLikeCounts(allIds),
+        getAvatarUrls(reviews.map(r => r.username))
+    ]);
+    reviews.forEach(r => { r.avatar_url = avatarMap[r.username] || null; });
+
+    list.innerHTML = reviews.map(c => buildReviewHtml(c, session, likedSet, likeCounts, false)).join('');
+
+
+    reviews.forEach(async c => {
+        const replies = await getReplies(c.id);
+        const container = document.getElementById(`replies-${c.id}`);
+        if (!container || replies.length === 0) return;
+        const rIds = replies.map(r => r.id);
+        const [rLiked, rCounts, rAvatarMap] = await Promise.all([getReviewLikes(rIds), getLikeCounts(rIds), getAvatarUrls(replies.map(r => r.username))]);
+        replies.forEach(r => { r.avatar_url = rAvatarMap[r.username] || null; });
+        container.innerHTML = replies.map(r => buildReviewHtml(r, session, rLiked, rCounts, true)).join('');
+    });
+}
+
+async function postReview() {
+    const input = document.getElementById('comment-input');
+    const text = input.value.trim();
+    if (!text) return;
+    const btn = document.querySelector('.comment-post-btn');
+    btn.textContent = 'Posting…'; btn.disabled = true;
+    try {
+        await addReview(currentDetailId, text, null);
+        input.value = '';
+        await renderReviews(currentDetailId);
+        showToast('Review posted!', 'success');
+    } catch(e) {
+        showToast('Error posting review: ' + e.message, 'error');
+    }
+    btn.textContent = 'Post Review'; btn.disabled = false;
+}
+
+function toggleReplyForm(reviewId) {
+    const form = document.getElementById(`reply-form-${reviewId}`);
+    form.classList.toggle('open');
+    if (form.classList.contains('open')) {
+        document.getElementById(`reply-input-${reviewId}`)?.focus();
+    }
+}
+
+async function postReply(mediaId, parentId) {
+    const input = document.getElementById(`reply-input-${parentId}`);
+    const text  = input?.value.trim();
+    if (!text) return;
+    try {
+        await addReview(mediaId, text, parentId);
+        input.value = '';
+        document.getElementById(`reply-form-${parentId}`)?.classList.remove('open');
+        await renderReviews(mediaId);
+        showToast('Reply posted!', 'success');
+    } catch(e) {
+        showToast('Error posting reply: ' + e.message, 'error');
+    }
+}
+
+async function doDeleteReview(mediaId, commentId, isReply) {
+    await deleteReview(commentId);
+    await renderReviews(mediaId);
+    showToast('Deleted.', '');
+}
+
+async function toggleLike(commentId) {
+    const session = authGetSession();
+    if (!session) { openAuthModal(); return; }
+    const btn   = document.getElementById(`like-btn-${commentId}`);
+    const count = document.getElementById(`like-count-${commentId}`);
+    if (!btn) return;
+    btn.disabled = true;
+    const result = await likeReview(commentId);
+    btn.disabled = false;
+    const cur = parseInt(count.textContent) || 0;
+    if (result.liked) {
+        btn.classList.add('liked');
+        count.textContent = cur + 1;
+    } else {
+        btn.classList.remove('liked');
+        count.textContent = Math.max(0, cur - 1);
+    }
+}
+
+
+async function renderReviewsFeed() {
+    const container = document.getElementById('reviews-feed-list');
+    container.innerHTML = '<div style="color:var(--muted);text-align:center;padding:60px">Loading…</div>';
+    try {
+        const reviews = await getAllReviews(40);
+        if (!reviews.length) {
+            container.innerHTML = '<div class="empty-state"><i class="fa fa-comment-slash"></i>No reviews yet.</div>';
+            return;
+        }
+        // Fetch media info for each unique media_id
+        const mediaIds = [...new Set(reviews.map(r => r.media_id))];
+        const mediaMap = {};
+        await Promise.all(mediaIds.map(async id => {
+            const item = await dbGetById(id);
+            if (item) mediaMap[id] = item;
+        }));
+
+        const session   = authGetSession();
+        const allIds    = reviews.map(r => r.id);
+        const [likedSet, likeCounts, avatarMap] = await Promise.all([
+            getReviewLikes(allIds),
+            getLikeCounts(allIds),
+            getAvatarUrls(reviews.map(r => r.username))
+        ]);
+        reviews.forEach(r => { r.avatar_url = avatarMap[r.username] || null; });
+
+        container.innerHTML = reviews.map(r => {
+            const media  = mediaMap[r.media_id];
+            const color  = avatarColor(r.username);
+            const liked  = likedSet.has(r.id);
+            const count  = likeCounts[r.id] || 0;
+            const likeClass = liked ? 'review-like-btn liked' : 'review-like-btn';
+            const likeBtn = session && !session.is_admin
+                ? `<button class="${likeClass}" id="like-btn-${r.id}" onclick="toggleLike(${r.id})"><i class="fa fa-heart"></i> <span id="like-count-${r.id}">${count}</span></button>`
+                : (count > 0 ? `<span style="color:var(--muted);font-size:0.8rem"><i class="fa fa-heart"></i> ${count}</span>` : '');
+            const thumb = media?.image && !media.image.includes('placehold') ? media.image : '';
+            return `<div class="review-feed-card">
+                <div class="review-feed-media" onclick="goTo('detail','${r.media_id}')">
+                    ${thumb ? `<img class="review-feed-thumb" src="${thumb}" alt="">` : `<div class="review-feed-thumb" style="background:var(--surface2)"></div>`}
+                    <div>
+                        <div class="review-feed-title">${escHtml(media?.title || 'Unknown')}</div>
+                        <div class="review-feed-type">${media?.type === 'movie' ? '🎬 Movie' : '🎮 Game'} · ${media?.year || ''}</div>
+                    </div>
+                </div>
+                <div class="comment-header" style="margin-bottom:8px">
+                    <div class="comment-avatar" style="background:${color}22;color:${color};padding:0;overflow:hidden">${renderAvatar(r.username, color, r.avatar_url || null, 30)}</div>
+                    <span class="comment-username">${escHtml(r.username)}</span>
+                    ${r.is_admin ? '<span class="comment-admin-tag">ADMIN</span>' : ''}
+                    <span class="comment-time">${formatDate(r.created_at)}</span>
+                </div>
+                <p class="comment-text">${escHtml(r.text)}</p>
+                <div class="review-actions" style="margin-top:10px">
+                    ${likeBtn}
+                    <button class="review-reply-btn" onclick="goTo('detail','${r.media_id}')"><i class="fa fa-arrow-right"></i> View</button>
+                </div>
+            </div>`;
+        }).join('');
+    } catch(e) {
+        container.innerHTML = `<div style="color:var(--pink);text-align:center;padding:40px">${e.message}</div>`;
+    }
+}
+
+async function renderProfile() {
+    const session = authGetSession();
+    if (!session) { goTo('home'); return; }
+
+    const isAdmin = session.is_admin;
+    const name    = session.username;
+    const color   = isAdmin ? 'var(--cyan)' : (session.avatar_color || '#888');
+    const avatarUrl = session.avatar_url || null;
+
+
+    const avatarEl = document.getElementById('profile-avatar-lg');
+    avatarEl.style.borderColor = color;
+    avatarEl.style.background  = isAdmin ? 'rgba(0,229,255,0.15)' : (avatarUrl ? 'transparent' : color + '22');
+    avatarEl.style.color       = color;
+
+    const overlay = avatarEl.querySelector('.avatar-upload-overlay');
+
+    [...avatarEl.childNodes].forEach(n => { if (n !== overlay) n.remove(); });
+    if (avatarUrl) {
+        const img = document.createElement('img');
+        img.src = avatarUrl;
+        img.alt = name;
+        img.onerror = () => {
+            img.remove();
+            avatarEl.insertBefore(document.createTextNode(name.slice(0,2).toUpperCase()), overlay);
+            avatarEl.style.background = color + '22';
+        };
+        avatarEl.insertBefore(img, overlay);
+    } else {
+        avatarEl.insertBefore(document.createTextNode(name.slice(0,2).toUpperCase()), overlay);
+    }
+    document.getElementById('profile-name').textContent     = name.toUpperCase();
+    document.getElementById('profile-role-tag').textContent = isAdmin ? 'ADMINISTRATOR' : 'MEMBER';
+
+    if (isAdmin) {
+        document.getElementById('profile-bio-text').textContent = 'Site administrator.';
+        document.getElementById('profile-joined').textContent = '';
+        document.getElementById('profile-stats-row').innerHTML = '';
+        document.getElementById('edit-bio-btn').style.display = 'none';
+        document.getElementById('tab-favorites').innerHTML = '<div class="empty-state"><i class="fa fa-shield-halved"></i>Admin accounts don\'t have favorites.<br><br><button onclick="goTo(\'admin\')" style="background:var(--cyan);color:#000;border:none;padding:10px 24px;border-radius:6px;font-weight:700;cursor:pointer">Go to Admin Panel</button></div>';
+        document.getElementById('tab-ratings').innerHTML = '<div class="empty-state"><i class="fa fa-shield-halved"></i>Admin accounts don\'t have ratings.</div>';
+        document.getElementById('tab-reviews').innerHTML = '<div class="empty-state"><i class="fa fa-shield-halved"></i>Admin accounts don\'t have reviews.</div>';
+        return;
+    }
+
+
+    const profile = await getUserProfile() || {};
+    document.getElementById('profile-bio-text').textContent = profile.bio || 'No bio yet.';
+    document.getElementById('edit-bio-btn').style.display = 'inline-flex';
+    const joined = new Date(profile.created_at || session.joined_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+    document.getElementById('profile-joined').textContent = 'Member since ' + joined;
+
+
+    if (profile.avatar_url && profile.avatar_url !== avatarUrl) {
+        const avatarEl2 = document.getElementById('profile-avatar-lg');
+        const overlay2  = avatarEl2.querySelector('.avatar-upload-overlay');
+        [...avatarEl2.childNodes].forEach(n => { if (n !== overlay2) n.remove(); });
+        avatarEl2.style.background = 'transparent';
+        const img2 = document.createElement('img');
+        img2.src = profile.avatar_url;
+        img2.alt = name;
+        avatarEl2.insertBefore(img2, overlay2);
+    }
+
+    const [favIds, ratingsMap, userReviews] = await Promise.all([getUserFavorites(), getUserRatings(), getUserReviews(session.user_id)]);
+
+    document.getElementById('profile-stats-row').innerHTML = `
+        <div class="stat-item"><div class="p-stat-num">${favIds.length}</div><div class="p-stat-label">Favorites</div></div>
+        <div class="stat-item"><div class="p-stat-num">${Object.keys(ratingsMap).length}</div><div class="p-stat-label">Ratings</div></div>
+        <div class="stat-item"><div class="p-stat-num">${userReviews.length}</div><div class="p-stat-label">Reviews</div></div>`;
+
+
+    const favGrid = document.getElementById('favorites-grid');
+    if (favIds.length === 0) {
+        favGrid.innerHTML = '<div class="empty-state"><i class="fa fa-heart"></i>No favorites yet.<br>Browse media and click the heart!</div>';
+    } else {
+        const favItems = await Promise.all(favIds.map(id => dbGetById(id)));
+        favGrid.innerHTML = favItems.filter(Boolean).map(item => {
+            const img = item.image || `https://placehold.co/300x450/141414/333?text=${encodeURIComponent(item.title.slice(0,12))}&font=oswald`;
+            return `<div class="rated-card" onclick="goTo('detail','${item.id}')">
+                <img id="fav-img-${item.id}" src="${img}" alt="${item.title}" loading="lazy">
+                <div class="rated-card-stars">${item.title.slice(0,18)}</div>
+            </div>`;
+        }).join('');
+        favItems.filter(Boolean).forEach(async item => {
+            const url = await resolveImage(item);
+            const el = document.getElementById(`fav-img-${item.id}`);
+            if (el) el.src = url;
+        });
+    }
+
+
+    const ratGrid = document.getElementById('ratings-grid');
+    const ratingEntries = Object.entries(ratingsMap);
+    if (ratingEntries.length === 0) {
+        ratGrid.innerHTML = '<div class="empty-state"><i class="fa fa-star"></i>No ratings yet.<br>Rate something on its detail page!</div>';
+    } else {
+        const ratItems = await Promise.all(ratingEntries.map(([id]) => dbGetById(Number(id))));
+        ratGrid.innerHTML = ratingEntries.map(([id, stars], i) => {
+            const item = ratItems[i];
+            if (!item) return '';
+            const img = item.image || `https://placehold.co/300x450/141414/333?text=${encodeURIComponent(item.title.slice(0,12))}&font=oswald`;
+            const starsStr = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+            return `<div class="rated-card" onclick="goTo('detail','${item.id}')">
+                <img id="rat-img-${item.id}" src="${img}" alt="${item.title}" loading="lazy">
+                <div class="rated-card-stars">${starsStr}</div>
+            </div>`;
+        }).join('');
+        ratingEntries.forEach(async ([id], i) => {
+            const item = ratItems[i];
+            if (!item) return;
+            const url = await resolveImage(item);
+            const el = document.getElementById(`rat-img-${item.id}`);
+            if (el) el.src = url;
+        });
+    }
+
+  
+    const revContainer = document.getElementById('profile-reviews-list');
+    if (!userReviews.length) {
+        revContainer.innerHTML = '<div class="empty-state"><i class="fa fa-comment"></i>No reviews yet.<br>Share your thoughts on a movie or game!</div>';
+    } else {
+        const mediaIds = [...new Set(userReviews.map(r => r.media_id))];
+        const mediaMap = {};
+        await Promise.all(mediaIds.map(async id => {
+            const item = await dbGetById(id);
+            if (item) mediaMap[id] = item;
+        }));
+        const allIds = userReviews.map(r => r.id);
+        const [likedSet, likeCounts] = await Promise.all([getReviewLikes(allIds), getLikeCounts(allIds)]);
+        revContainer.innerHTML = userReviews.map(r => {
+            const media = mediaMap[r.media_id];
+            const color = avatarColor(r.username);
+            const count = likeCounts[r.id] || 0;
+            return `<div class="review-feed-card">
+                <div class="review-feed-media" onclick="goTo('detail','${r.media_id}')">
+                    <div>
+                        <div class="review-feed-title">${escHtml(media?.title || 'Unknown')}</div>
+                        <div class="review-feed-type">${media?.type === 'movie' ? '🎬 Movie' : '🎮 Game'} · ${media?.year || ''}</div>
+                    </div>
+                </div>
+                <p class="comment-text">${escHtml(r.text)}</p>
+                <div class="review-actions" style="margin-top:8px">
+                    ${count > 0 ? `<span style="color:var(--pink);font-size:0.8rem"><i class="fa fa-heart"></i> ${count}</span>` : ''}
+                    <span class="comment-time">${formatDate(r.created_at)}</span>
+                </div>
+            </div>`;
+        }).join('');
+    }
+}
+
+function switchProfileTab(tab) {
+    const tabs = document.querySelectorAll('.profile-tab');
+    tabs.forEach((t, i) => {
+        t.classList.toggle('active',
+            (tab === 'favorites' && i === 0) ||
+            (tab === 'ratings'   && i === 1) ||
+            (tab === 'reviews'   && i === 2)
+        );
+    });
+    document.getElementById('tab-favorites').classList.toggle('active', tab === 'favorites');
+    document.getElementById('tab-ratings').classList.toggle('active', tab === 'ratings');
+    document.getElementById('tab-reviews').classList.toggle('active', tab === 'reviews');
+}
+
+function triggerAvatarUpload() {
+    const session = authGetSession();
+    if (!session || session.is_admin) return;
+    document.getElementById('avatar-file-input').click();
+}
+
+async function handleAvatarUpload(input) {
+    const file = input.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) { showToast('Please select an image file.', 'error'); return; }
+    if (file.size > 3 * 1024 * 1024)    { showToast('Image must be under 3 MB.', 'error'); return; }
+
+    showToast('Uploading…', '');
+    try {
+        const url = await userUploadAvatar(file);
+      
+        const avatarEl = document.getElementById('profile-avatar-lg');
+        const overlay  = avatarEl.querySelector('.avatar-upload-overlay');
+        [...avatarEl.childNodes].forEach(n => { if (n !== overlay) n.remove(); });
+        avatarEl.style.background = 'transparent';
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = authGetSession()?.username || '';
+        avatarEl.insertBefore(img, overlay);
+        updateHeader();
+        showToast('Profile picture updated! 🎉', 'success');
+    } catch(e) {
+        showToast('Upload failed: ' + e.message, 'error');
+    }
+    input.value = ''; 
+}
+
+async function openEditBio() {
+    const current = authGetSession()?.bio || '';
+    const newBio = prompt('Update your bio:', current);
+    if (newBio === null) return;
+    await userUpdateProfile(newBio);
+    showToast('Bio updated!', 'success');
+    await renderProfile();
+}
+
+
+async function renderAdmin() {
+    if (!authIsAdmin()) { goTo('home'); return; }
+    await renderAdminTable();
+    const sel = document.getElementById('a-type');
+    // Remove old listener to avoid stacking
+    sel.onchange = () => {
+        const isGame = sel.value === 'game';
+        document.getElementById('a-director-wrap').style.display = isGame ? 'none' : 'block';
+        document.getElementById('a-developer-wrap').style.display = isGame ? 'block' : 'none';
+    };
+}
+
+async function renderAdminTable() {
+    document.getElementById('admin-tbody').innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>';
+    const data = await dbGetAll();
+    document.getElementById('admin-tbody').innerHTML = data.map(item => `
+        <tr>
+            <td style="color:var(--muted);font-size:0.8rem">${item.id}</td>
+            <td><strong>${item.title}</strong></td>
+            <td><span class="type-${item.type}">${item.type.toUpperCase()}</span></td>
+            <td style="color:var(--muted2)">${item.year || '—'}</td>
+            <td>
+                <button class="btn-sm btn-edit" onclick="adminEdit(${item.id})"><i class="fa fa-pencil"></i> Edit</button>
+                <button class="btn-sm btn-delete" onclick="adminDelete(${item.id})"><i class="fa fa-trash"></i> Del</button>
+            </td>
+        </tr>`).join('');
+}
+
+async function adminEdit(id) {
+    const item = await dbGetById(id);
+    if (!item) return;
+    document.getElementById('edit-id').value = id;
+    document.getElementById('a-type').value  = item.type;
+    document.getElementById('a-title').value = item.title;
+    document.getElementById('a-year').value  = item.year || '';
+    document.getElementById('a-director').value  = item.director || '';
+    document.getElementById('a-developer').value = item.developer || '';
+    document.getElementById('a-duration').value  = item.duration || '';
+    document.getElementById('a-desc').value = item.description || '';
+    document.getElementById('a-image').value = item.image || '';
+    const prev = document.getElementById('admin-img-preview');
+    if (item.image) { prev.src = item.image; prev.classList.add('show'); }
+    else prev.classList.remove('show');
+    const isGame = item.type === 'game';
+    document.getElementById('a-director-wrap').style.display = isGame ? 'none' : 'block';
+    document.getElementById('a-developer-wrap').style.display = isGame ? 'block' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function adminSave() {
+    const id    = document.getElementById('edit-id').value;
+    const type  = document.getElementById('a-type').value;
+    const title = document.getElementById('a-title').value.trim();
+    if (!title) { showToast('Title is required.', 'error'); return; }
+
+    let image = document.getElementById('a-image').value.trim() || null;
+
+    const btn = document.querySelector('.btn-primary');
+    btn.textContent = 'Saving…'; btn.disabled = true;
+
+  
+    if (!image) {
+        btn.textContent = 'Fetching image…';
+        try {
+            const year = document.getElementById('a-year').value.trim();
+            const fetched = type === 'movie'
+                ? await fetchMoviePoster(title, year)
+                : await fetchGameCover(title);
+         
+            if (!fetched.includes('placehold.co')) {
+                image = fetched;
+                document.getElementById('a-image').value = image;
+                const prev = document.getElementById('admin-img-preview');
+                prev.src = image; prev.classList.add('show');
+            }
+        } catch(e) {}
+        btn.textContent = 'Saving…';
+    }
+
+    const payload = {
+        type, title,
+        year:        document.getElementById('a-year').value.trim(),
+        director:    type === 'movie' ? document.getElementById('a-director').value.trim() : null,
+        developer:   type === 'game'  ? document.getElementById('a-developer').value.trim() : null,
+        duration:    document.getElementById('a-duration').value.trim(),
+        description: document.getElementById('a-desc').value.trim(),
+        image,
+    };
+
+    try {
+        if (id) { await dbUpdate(Number(id), payload); showToast('Updated!', 'success'); }
+        else    { await dbAdd(payload);               showToast('Added!', 'success'); }
+        adminClear();
+        await renderAdminTable();
+    } catch(e) {
+        showToast('Error: ' + e.message, 'error');
+    }
+    btn.textContent = 'Save'; btn.disabled = false;
+}
+
+async function adminDelete(id) {
+    if (!confirm('Delete this item?')) return;
+    await dbDelete(id);
+    await renderAdminTable();
+    showToast('Deleted.', '');
+}
+
+function adminClear() {
+    ['edit-id','a-title','a-year','a-director','a-developer','a-duration','a-desc','a-image'].forEach(k => {
+        document.getElementById(k).value = '';
+    });
+    document.getElementById('a-type').value = 'movie';
+    document.getElementById('admin-img-preview').classList.remove('show');
+    document.getElementById('a-director-wrap').style.display = 'block';
+    document.getElementById('a-developer-wrap').style.display = 'none';
+}
+
+function previewAdminImg() {
+    const url = document.getElementById('a-image').value.trim();
+    const prev = document.getElementById('admin-img-preview');
+    if (url) { prev.src = url; prev.classList.add('show'); }
+    else prev.classList.remove('show');
+}
+
+async function adminFetchImage() {
+    const title = document.getElementById('a-title').value.trim();
+    const type  = document.getElementById('a-type').value;
+    const year  = document.getElementById('a-year').value.trim();
+    if (!title) { showToast('Enter a title first.', 'error'); return; }
+    showToast('Fetching poster…', '');
+    const url = type === 'movie' ? await fetchMoviePoster(title, year) : await fetchGameCover(title);
+    document.getElementById('a-image').value = url;
+    const prev = document.getElementById('admin-img-preview');
+    prev.src = url; prev.classList.add('show');
+    showToast('Poster fetched!', 'success');
+}
+
+
+function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let toastTimer;
+function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (type ? ' ' + type : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+
+updateHeader();
+handleHash();
+if (!window.location.hash) navigate('home');
+</script>
+</body>
+</html>
