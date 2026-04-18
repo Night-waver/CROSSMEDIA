@@ -1,4 +1,4 @@
-# 🎬🎮 CROSSMEDIA
+#  CROSSMEDIA (Numberboxed)
 
 > Découvrez, notez et suivez vos films et jeux préférés. Construisez votre collection personnelle.
 
@@ -22,8 +22,8 @@
 
 ### Prérequis
 
-- Un compte [Supabase](https://supabase.com) (gratuit, sans carte bancaire)
-- Un hébergeur statique (ex. [Neocities](https://neocities.org), GitHub Pages, etc.)
+- Un compte [Supabase](https://supabase.com) 
+- Un hébergeur statique (ex. [Nekoweb](https://neocities.org), GitHub Pages, etc.)
 
 ### Étapes
 
