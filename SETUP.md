@@ -1,78 +1,80 @@
-# CROSSMEDIA — Supabase Setup Guide
+# CROSSMEDIA — Guide de configuration Supabase
 
-## Step 1 — Create a free Supabase project
+## Étape 1 — Créer un projet Supabase gratuit
 
-1. Go to https://supabase.com → sign up (free, no credit card)
-2. Click **New Project**, give it a name, set a password, pick a region
-3. Wait ~2 minutes for it to spin up
-
----
-
-## Step 2 — Run the database schema
-
-1. In Supabase dashboard → **SQL Editor** → **New query**
-2. Open `schema.sql`, copy ALL of it, paste it in, click **Run**
-3. You should see "Success" — the tables, security rules, and 24 starter items are created
-
-> If you already ran the old schema, just run the new one — it drops and recreates all policies safely.
+1. Allez sur https://supabase.com → inscrivez-vous 
+2. Cliquez sur **New Project**, donnez-lui un nom, définissez un mot de passe, choisissez une région
+3. Attendez environ 2 minutes pour que le projet soit prêt
 
 ---
 
-## Step 3 — Get your credentials
+## Étape 2 — Exécuter le schéma de la base de données
 
-Go to **Project Settings** → **API** and copy:
-- **Project URL** → looks like `https://abcdefghijkl.supabase.co`
-- **anon / public key** → long string starting with `eyJ...`
+1. Dans le tableau de bord Supabase → **SQL Editor** → **New query**
+2. Ouvrez `schema.sql`, copiez TOUT, collez-le, puis cliquez sur **Run**
+3. Vous devriez voir "Success" — les tables, règles de sécurité et 24 éléments initiaux sont créés
+
+> Si vous avez déjà exécuté un ancien schéma, lancez simplement le nouveau — il supprime et recrée tout en toute sécurité.
 
 ---
 
-## Step 4 — Put them in db.js
+## Étape 3 — Récupérer vos identifiants
 
-Open `db.js` and replace the two lines at the top:
+Allez dans **Project Settings** → **API** et copiez :
+
+- **Project URL** → ressemble à `https://abcdefghijkl.supabase.co`
+- **anon / public key** → longue chaîne commençant par `eyJ...`
+
+---
+
+## Étape 4 — Les ajouter dans db.js
+
+Ouvrez `db.js` et remplacez les deux lignes en haut :
 
 ```js
-const SUPABASE_URL      = 'https://YOUR-PROJECT.supabase.co';
+const SUPABASE_URL      = 'https://VOTRE-PROJET.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 ```
 
 ---
 
-## Step 5 — Disable email confirmation (REQUIRED)
+## Étape 5 — Désactiver la confirmation par email (OBLIGATOIRE)
 
-The site uses fake emails like `username@crossmedia.local` to avoid
-needing a real inbox. Email confirmation must be off or registration fails.
+Le site utilise de faux emails comme `username@crossmedia.local` pour éviter
+d’avoir besoin d’une vraie boîte mail. La confirmation doit être désactivée sinon l’inscription échoue.
 
-1. Supabase dashboard → **Authentication** → **Providers** → **Email**
-2. Toggle **"Confirm email"** → OFF
-3. Save
+1. Tableau de bord Supabase → **Authentication** → **Providers** → **Email**
+2. Désactivez **"Confirm email"**
+3. Enregistrez
 
 ---
 
-## Step 6 — Upload to your host
+## Étape 6 — Upload vers votre hébergeur
 
-Upload both files to Neocities (or any host):
+Téléversez les fichiers sur Neocities (ou autre hébergeur) :
+
 - `index.html`
 - `db.js`
 
 ---
 
-## Step 7 — Make yourself admin
+## Étape 7 — Vous mettre admin
 
-1. Register your account on the site normally
-2. Go to Supabase → **Table Editor** → **profiles**
-3. Find your row, click the `is_admin` cell → set to `true` → Save
-4. Log out and back in — you'll see the Admin panel
+1. Créez votre compte normalement sur le site
+2. Allez dans Supabase → **Table Editor** → **profiles**
+3. Trouvez votre ligne, cliquez sur la cellule `is_admin` → mettez `true` → Enregistrer
+4. Déconnectez-vous puis reconnectez-vous — vous verrez le panneau Admin
 
 ---
 
-## Troubleshooting
+## Dépannage
 
-**"Registration failed"** → Step 5 (email confirmation must be OFF)
+**"Registration failed"** → Vérifiez l’étape 5 (confirmation email désactivée)
 
-**"Invalid username or password"** → Same as above, or check the email was confirmed in Auth → Users
+**"Invalid username or password"** → Même problème ou vérifiez si l’email est confirmé dans Auth → Users
 
-**Media grid empty** → Run `select count(*) from media;` in SQL Editor. If 0, re-run schema.sql
+**Grille vide** → Exécutez `select count(*) from media;` dans SQL Editor. Si 0, relancez `schema.sql`
 
-**Admin can't add media** → Make sure `is_admin = true` in profiles table AND you re-logged in after setting it
+**Admin ne peut pas ajouter du contenu** → Vérifiez que `is_admin = true` dans la table profiles ET reconnectez-vous après modification
 
-**Comments show "Just now"** → Old comments without timestamps — new ones will show correct dates
+**Commentaires affichent "Just now"** → Anciens commentaires sans timestamp — les nouveaux afficheront la bonne date
