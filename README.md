@@ -7,18 +7,18 @@
 
 ---
 
-## ✨ Fonctionnalités
+##  Fonctionnalités
 
-- 🔍 **Catalogue** — Parcourez et filtrez films et jeux vidéo
-- ⭐ **Notation** — Notez chaque œuvre sur 5 étoiles
-- ❤️ **Favoris** — Créez votre liste personnelle
-- 💬 **Avis** — Rédigez des critiques, répondez aux commentaires, likez les avis
-- 👤 **Profil** — Avatar personnalisable, bio, historique de notations et d'avis
-- 🛡️ **Admin** — Panneau d'administration pour gérer la médiathèque (ajout, édition, suppression)
+-  **Catalogue** — Parcourez et filtrez films et jeux vidéo
+-  **Notation** — Notez chaque œuvre sur 5 étoiles
+-  **Favoris** — Créez votre liste personnelle
+-  **Avis** — Rédigez des critiques, répondez aux commentaires, likez les avis
+-  **Profil** — Avatar personnalisable, bio, historique de notations et d'avis
+-  **Admin** — Panneau d'administration pour gérer la médiathèque (ajout, édition, suppression)
 
 ---
 
-## 🚀 Installation
+##  Installation
 
 ### Prérequis
 
@@ -43,11 +43,11 @@
 
 6. **Devenez admin** — Inscrivez-vous sur le site, puis dans Supabase passez `is_admin` à `true` dans la table `profiles`
 
-> 📖 Consultez [`SETUP.md`](./SETUP.md) pour un guide détaillé avec résolution des erreurs courantes.
+>  Consultez [`SETUP.md`](./SETUP.md) pour un guide détaillé avec résolution des erreurs courantes.
 
 ---
 
-## 🗂️ Structure du projet
+##  Structure du projet
 
 ```
 CROSSMEDIA/
@@ -59,7 +59,7 @@ CROSSMEDIA/
 
 ---
 
-## 🛠️ Stack technique
+##  Stack technique
 
 | Composant | Technologie |
 |---|---|
@@ -72,12 +72,12 @@ CROSSMEDIA/
 
 ---
 
-## 🔒 Sécurité
+##  Sécurité
 
 La base de données est protégée par des politiques **Row Level Security (RLS)** : chaque utilisateur n'accède qu'à ses propres données. Seuls les administrateurs peuvent modifier la médiathèque.
 
 ---
 
-## 📄 Licence
+##  Licence
 
 Ce projet est distribué sous licence MIT. Libre à vous de le modifier et le redistribuer.
